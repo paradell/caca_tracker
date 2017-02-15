@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CacaTracker</string>
+    <string name="add_user_button">Add User</string>
+    <string name="user1_name">User 1</string>
 </resources>
