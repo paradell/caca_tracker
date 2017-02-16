@@ -1,13 +1,16 @@
 package app.cacatracker;
 
+import android.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements InsertUserDialog.NoticeDialogListener {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,10 +19,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addUser(View v){
-        addUserRow();
+        // Start the insert User dialog
+        DialogFragment dialog = new InsertUserDialog();
+        dialog.show(getFragmentManager(), "add_user");
     }
 
-    public LinearLayout createUserRow(){
+    public LinearLayout createUserRow(String name){
         LinearLayout user_row = new LinearLayout(this);
 
         // Define user icon
@@ -30,17 +35,27 @@ public class MainActivity extends AppCompatActivity {
 
         // Define user name
         TextView user_text = new TextView(this);
-        user_text.setText(R.string.user1_name);
+        user_text.setText(name);
 
         // Add icon and text to the row view
         user_row.addView(user_image);
         user_row.addView(user_text);
         return user_row;
     }
-    public void addUserRow(){
+    public void addUserRow(String name){
         // Actual addition of a new user to the view list
         LinearLayout user_list = (LinearLayout) findViewById(R.id.user_list);
-        LinearLayout user_row = createUserRow();
+        LinearLayout user_row = createUserRow(name);
         user_list.addView(user_row);
+    }
+
+    public void onDialogPositiveClick(DialogFragment dialog, String name) {
+        // Add a new user row using the name set in the dialog
+        addUserRow(name);
+    }
+
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        //Close the dialog and nothing is done
+        dialog.getDialog().cancel();
     }
 }
