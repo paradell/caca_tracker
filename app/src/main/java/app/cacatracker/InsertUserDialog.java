@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.widget.EditText;
 
 
 public class InsertUserDialog extends DialogFragment{
@@ -16,7 +17,7 @@ public class InsertUserDialog extends DialogFragment{
     * implement this interface in order to receive event callbacks.
             * Each method passes the DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog);
+        public void onDialogPositiveClick(DialogFragment dialog, String name);
         public void onDialogNegativeClick(DialogFragment dialog);
     }
 
@@ -31,28 +32,29 @@ public class InsertUserDialog extends DialogFragment{
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder dialog_builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
+        dialog_builder.setTitle("Add a new user");
+
+        // Add a insert text field in the Alert Dialog
+        final EditText name = new EditText(getActivity());
+        name.setHint(R.string.insert_user_hint);
+
+        dialog_builder.setView(name);
 
         // Import the defined layout in the dialog
-        dialog_builder.setView(inflater.inflate(R.layout.insert_user_dialog, null))
-        // Add action buttons
-                .setPositiveButton(R.string.add_user, new DialogInterface.OnClickListener() {
+        dialog_builder.setPositiveButton(R.string.add_user, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        //Add a new row with the name of the new user
-                        mListener.onDialogPositiveClick(InsertUserDialog.this);
+                        // Send the user name to MainActivity to use the text value
+                        mListener.onDialogPositiveClick(InsertUserDialog.this, name.getText().toString());
 
                     }
                 })
                 .setNegativeButton(R.string.cancel_add_user, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Close the dialog and nothing is done
                         mListener.onDialogNegativeClick(InsertUserDialog.this);
 
                     }
                 });
-
-
 
         return dialog_builder.create();
     }

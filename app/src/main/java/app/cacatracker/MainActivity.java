@@ -49,13 +49,13 @@ public class MainActivity extends AppCompatActivity implements InsertUserDialog.
         user_list.addView(user_row);
     }
 
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        // User touched the dialog's positive button
-        EditText name = (EditText) findViewById(R.id.input_username);
-        addUserRow(name.getText().toString());
+    public void onDialogPositiveClick(DialogFragment dialog, String name) {
+        // Add a new user row using the name set in the dialog
+        addUserRow(name);
     }
 
     public void onDialogNegativeClick(DialogFragment dialog) {
+        //Close the dialog and nothing is done
         dialog.getDialog().cancel();
     }
 }
